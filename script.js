@@ -25,11 +25,29 @@ function searchStation() {
     hideError();
     hideResults();
 
-    // TODO: STUDENTS COMPLETE THIS SECTION
-    // 1. Build the API URL using the constants above and the callsign variable
-    // 2. Make a fetch request to the RadioLand API
-    // 3. Handle the response and call showResults()
-    // 4. Handle errors and call showError()
+    // Build the API URL
+    const apiUrl = `${API_BASE_URL}?`
+    +
+    `lat=${PHILLY_LAT}&lon=${PHILLY_LON}&`
+    +
+    `search_freq=none&callsign=${callsign}&request_type=4&`
+    +
+    `pi_code=none&sig_strength=null&startMiles=none&`
+    +
+    `miles=null&format=none&rxHeight=10&measurementUnit=meters`
+    ;
+    // Make the fetch request
+    fetch(apiUrl)
+    .then(response => response.json())
+    .then(data => {
+        hideLoading();
+        showResults(data);
+    })
+    .catch(error => {
+        hideLoading();
+        showError('Error connecting to RadioLand API. Please try again.');
+        console.error('API Error:', error);
+    });
 
     // HINT: The full URL should look like:
     // http://52.151.197.43/?lat=39.87279&lon=-74.6647&search_freq=none&callsign=WMMR&request_type=4&pi_code=none&sig_strength=null&startMiles=none&miles=null&format=none&rxHeight=10&measurementUnit=meters
